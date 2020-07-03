@@ -9,11 +9,74 @@ output: rmarkdown::github_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(tidyr)
+library(caret)
+library(corrplot)
+```
+
+# Load and Prep Data
+```{r, echo=TRUE}
+#Read in data, filter according to day of week, keep relevant variables
+data<-read.csv("C:\\Users\\jessi\\Documents\\ST 558\\data\\OnlineNewsPopularity.csv", header=T)
+data<-data %>% filter(weekday_is_monday==1) %>% select(-c(url, timedelta, weekday_is_monday, weekday_is_tuesday, weekday_is_wednesday, weekday_is_thursday, weekday_is_friday, weekday_is_saturday, weekday_is_sunday))
+#Generate categorical outcome variable
+data$sharescat[data$shares >= 1400] <- 0
+data$sharescat[data$shares < 1400] <- 1
+data$sharescat <- as.factor(data$sharescat)
+#Split data into training and test sets
+set.seed(1)
+train <- sample(1:nrow(data), size = nrow(data)*0.7)
+test <- dplyr::setdiff(1:nrow(data), train)
+dataTrain <- data[train, ]
+dataTest <- data[test, ]
+```
+
+
+```{r, results="hide"}
+step(lm(shares ~ n_tokens_title + n_tokens_content + n_unique_tokens + n_non_stop_words + n_non_stop_unique_tokens + num_hrefs + num_self_hrefs + num_imgs + num_videos + average_token_length + num_keywords + kw_min_min + kw_max_min + kw_avg_min + kw_min_max + kw_max_max + kw_avg_max + kw_min_avg + kw_max_avg + kw_avg_avg + LDA_00 + LDA_01 + LDA_02 +LDA_03 + LDA_04 + global_subjectivity + global_sentiment_polarity + title_subjectivity + title_sentiment_polarity + abs_title_subjectivity + abs_title_sentiment_polarity + global_rate_positive_words + global_rate_negative_words + rate_positive_words + rate_negative_words + avg_positive_polarity + min_positive_polarity + max_positive_polarity + avg_negative_polarity + min_negative_polarity + max_negative_polarity + self_reference_min_shares + self_reference_max_shares + self_reference_avg_sharess + data_channel_is_lifestyle + data_channel_is_entertainment + data_channel_is_bus + data_channel_is_socmed + data_channel_is_tech + data_channel_is_world, data=data))
 ```
 
 ```{r, echo=TRUE}
-data<-read.csv("C:\\Users\\jessi\\Documents\\ST 558\\data\\OnlineNewsPopularity.csv", header=T)
-data<-data %>% filter(weekday_is_monday==1)
+lmod1<-train(shares ~ average_token_length + num_keywords + kw_min_min + 
+    kw_avg_min + kw_max_max + kw_min_avg + kw_max_avg + kw_avg_avg + 
+    global_subjectivity + min_positive_polarity + avg_negative_polarity + 
+    self_reference_min_shares + data_channel_is_entertainment, data=data, method="lm")
+
+summary(lmod1)
 ```
 
-Hi
+```{r, echo=TRUE}
+modcorr <- cor(select(dataTrain, shares, average_token_length, num_keywords, kw_min_min, kw_avg_min, kw_max_max, kw_min_avg, kw_max_avg, kw_avg_avg, global_subjectivity, min_positive_polarity, avg_negative_polarity, self_reference_min_shares))
+corrplot(modcorr, method="circle")
+```
+
+```{r, echo=TRUE}
+lmod2<-train(shares ~ kw_avg_avg + avg_negative_polarity + self_reference_min_shares + data_channel_is_entertainment, data=data, method="lm")
+
+summary(lmod2)
+```
+
+```{r, echo=TRUE}
+modcorr <- cor(select(dataTrain, shares, kw_avg_avg, avg_negative_polarity, self_reference_min_shares))
+corrplot(modcorr, method="circle")
+```
+
+```{r, echo=TRUE}
+lmod2<-train(shares ~ kw_avg_avg + avg_negative_polarity + self_reference_min_shares + data_channel_is_entertainment, data=data, method="lm")
+
+summary(lmod2)
+```
+
+# Fit random forest
+```{r, echo=T}
+set.seed(16)
+#trctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
+rf_fit <- train(sharescat ~ kw_avg_avg + avg_negative_polarity + self_reference_min_shares + data_channel_is_entertainment, data = dataTrain, method = "rf",
+preProcess = c("center", "scale"))
+rf_fit
+#make predictions on test data
+test_pred <- predict(rf_fit, newdata = dataTest)
+res <- confusionMatrix(test_pred, dataTest$sharescat)
+res
+#misclassification rate
+1-sum(diag(res$table))/sum(res$table)
+```
