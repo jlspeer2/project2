@@ -1,0 +1,19 @@
+---
+title: "ST 558 Project 2"
+author: "Jessica Speer"
+date: "July 3, 2020"
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidyr)
+```
+
+```{r, echo=TRUE}
+data<-read.csv("C:\\Users\\jessi\\Documents\\ST 558\\data\\OnlineNewsPopularity.csv", header=T)
+data<-data %>% filter(weekday_is_monday==1)
+```
+
+Hi
