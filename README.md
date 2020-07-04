@@ -8,11 +8,17 @@ July 3, 2020
 [General (data exploration) is available here](st558proj2.md)
 
 [Monday is available here](monday.md)
+
 [Tuesday is available here](tuesday.md)
+
 [Wednesday is available here](wednesday.md)
+
 [Thursday is available here](thursday.md)
+
 [Friday is available here](friday.md)
+
 [Saturday is available here](saturday.md)
+
 [Sunday is available here](sunday.md)
 
 ### The code used to automate rmarkdown files:
