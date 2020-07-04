@@ -1,11 +1,17 @@
-ST558 Project 2
-================
-Jessica Speer
-July 3, 2020
+---
+title: "ST558 Project 2"
+author: "Jessica Speer"
+date: "July 3, 2020"
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 ### The code used to automate rmarkdown files:
 
-``` r
+```{r, eval=FALSE}
 dayvars <- c("monday", "tuesday")
 output_file <- paste0(dayvars, ".md")
 params = lapply(dayvars, FUN = function(x){list(day = x)})
