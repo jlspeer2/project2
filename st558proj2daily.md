@@ -60,26 +60,26 @@ dataTest <- data[test, ]
 
 ``` r
 par(mfrow=c(2,3))
-hist(dataTrain$shares, col="dark blue", main="Hist: Shares")
-hist(dataTrain$average_token_length, col="dark blue", main="Hist: Avg Token Length")
-hist(dataTrain$kw_avg_avg, col="dark blue", main="Hist: Keyword Avg")
-hist(dataTrain$global_subjectivity, col="dark blue", main="Hist: Global Subj.")
-hist(dataTrain$self_reference_avg_sharess, col="dark blue", main="Hist: Self Ref.")
+hist(dataTrain$shares, col="dark blue")
+hist(dataTrain$average_token_length, col="dark blue")
+hist(dataTrain$kw_avg_avg, col="dark blue")
+hist(dataTrain$global_subjectivity, col="dark blue")
+hist(dataTrain$self_reference_avg_sharess, col="dark blue")
 
 par(mfrow=c(2,3))
 ```
 
-![](tuesday_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](st558proj2daily_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
 ``` r
-plot(dataTrain$shares, col="dark blue", main="Plot: Shares")
-plot(dataTrain$average_token_length, col="dark blue", main="Plot: Avg Token Length")
-plot(dataTrain$kw_avg_avg, col="dark blue", main="Plot: Keyword Avg")
-plot(dataTrain$global_subjectivity, col="dark blue", main="Plot: Global Subj.")
-plot(dataTrain$self_reference_avg_sharess, col="dark blue", main="Plot:Self Ref")
+plot(dataTrain$shares, col="dark blue")
+plot(dataTrain$average_token_length, col="dark blue")
+plot(dataTrain$kw_avg_avg, col="dark blue")
+plot(dataTrain$global_subjectivity, col="dark blue")
+plot(dataTrain$self_reference_avg_sharess, col="dark blue")
 ```
 
-![](tuesday_files/figure-markdown_github/unnamed-chunk-2-2.png)
+![](st558proj2daily_files/figure-markdown_github/unnamed-chunk-2-2.png)
 
 ### Bar Plots (Binary Vars)
 
@@ -99,7 +99,7 @@ barplot(techcounts, col="dark blue", main="Data Channel: Tech")
 barplot(worldcounts, col="dark blue", main="Data Channel: World")
 ```
 
-![](tuesday_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](st558proj2daily_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 Models
 ------
@@ -159,13 +159,13 @@ summary(abs(residuals))
 plot(test_pred, dataTest$shares, col="dark blue")
 ```
 
-![](tuesday_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](st558proj2daily_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ``` r
 plot(residuals, col="dark blue")
 ```
 
-![](tuesday_files/figure-markdown_github/unnamed-chunk-4-2.png)
+![](st558proj2daily_files/figure-markdown_github/unnamed-chunk-4-2.png)
 
 Fit random forest
 =================
