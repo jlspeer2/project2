@@ -47,7 +47,7 @@ data$day[data$weekday_is_friday==1] <- "friday"
 data$day[data$weekday_is_saturday==1] <- "saturday"
 data$day[data$weekday_is_sunday==1] <- "sunday"
 #Filter according to day of week
-data<-data %>% filter(day=="monday")
+data<-filter(data, day==params$day)
 #Split data into training and test sets
 set.seed(1)
 train <- sample(1:nrow(data), size = nrow(data)*0.7)
@@ -69,7 +69,7 @@ hist(dataTrain$self_reference_avg_sharess, col="dark blue", main="Hist: Self Ref
 par(mfrow=c(2,3))
 ```
 
-![](monday_files/figure-markdown_github/unnamed-chunk-54-1.png)
+![](monday_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 ``` r
 plot(dataTrain$shares, col="dark blue", main="Plot: Shares")
@@ -79,7 +79,7 @@ plot(dataTrain$global_subjectivity, col="dark blue", main="Plot: Global Subj.")
 plot(dataTrain$self_reference_avg_sharess, col="dark blue", main="Plot:Self Ref")
 ```
 
-![](monday_files/figure-markdown_github/unnamed-chunk-54-2.png)
+![](monday_files/figure-markdown_github/unnamed-chunk-3-2.png)
 
 ### Bar Plots (Binary Vars)
 
@@ -99,7 +99,7 @@ barplot(techcounts, col="dark blue", main="Data Channel: Tech")
 barplot(worldcounts, col="dark blue", main="Data Channel: World")
 ```
 
-![](monday_files/figure-markdown_github/unnamed-chunk-55-1.png)
+![](monday_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 Models
 ------
@@ -159,13 +159,13 @@ summary(abs(residuals))
 plot(test_pred, dataTest$shares, col="dark blue")
 ```
 
-![](monday_files/figure-markdown_github/unnamed-chunk-56-1.png)
+![](monday_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 ``` r
 plot(residuals, col="dark blue")
 ```
 
-![](monday_files/figure-markdown_github/unnamed-chunk-56-2.png)
+![](monday_files/figure-markdown_github/unnamed-chunk-5-2.png)
 
 Fit random forest
 =================

@@ -47,7 +47,7 @@ data$day[data$weekday_is_friday==1] <- "friday"
 data$day[data$weekday_is_saturday==1] <- "saturday"
 data$day[data$weekday_is_sunday==1] <- "sunday"
 #Filter according to day of week
-data<-data %>% filter(day=="monday")
+data<-filter(data, day==params$day)
 #Split data into training and test sets
 set.seed(1)
 train <- sample(1:nrow(data), size = nrow(data)*0.7)
@@ -124,25 +124,25 @@ summary(lm_fit)
     ## 
     ## Residuals:
     ##    Min     1Q Median     3Q    Max 
-    ## -67423  -2626  -1387    -41 618552 
+    ## -11431  -2498  -1493    -73  77279 
     ## 
     ## Coefficients:
     ##                                 Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)                    7.736e+03  1.960e+03   3.947 8.02e-05 ***
-    ## average_token_length          -1.326e+03  2.940e+02  -4.511 6.62e-06 ***
-    ## kw_avg_avg                     5.576e-01  1.565e-01   3.563  0.00037 ***
-    ## global_subjectivity            4.583e+03  2.276e+03   2.013  0.04415 *  
-    ## avg_negative_polarity         -6.843e+03  1.749e+03  -3.913 9.25e-05 ***
-    ## self_reference_avg_sharess     8.436e-02  8.760e-03   9.630  < 2e-16 ***
-    ## data_channel_is_entertainment -1.539e+03  5.230e+02  -2.943  0.00326 ** 
-    ## data_channel_is_tech          -1.060e+03  5.525e+02  -1.919  0.05509 .  
-    ## data_channel_is_world         -8.272e+02  5.510e+02  -1.501  0.13332    
+    ## (Intercept)                    3.457e+03  1.663e+03   2.079   0.0377 *  
+    ## average_token_length          -4.823e+02  2.205e+02  -2.187   0.0288 *  
+    ## kw_avg_avg                     6.170e-01  1.328e-01   4.645 3.62e-06 ***
+    ## global_subjectivity            2.372e+03  1.728e+03   1.373   0.1700    
+    ## avg_negative_polarity         -6.536e+02  1.307e+03  -0.500   0.6172    
+    ## self_reference_avg_sharess     8.079e-03  5.387e-03   1.500   0.1338    
+    ## data_channel_is_entertainment -6.523e+01  4.141e+02  -0.158   0.8748    
+    ## data_channel_is_tech           1.546e+02  4.658e+02   0.332   0.7399    
+    ## data_channel_is_world         -6.662e+02  4.390e+02  -1.518   0.1293    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 12990 on 4653 degrees of freedom
-    ## Multiple R-squared:  0.04222,    Adjusted R-squared:  0.04057 
-    ## F-statistic: 25.64 on 8 and 4653 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 6479 on 1906 degrees of freedom
+    ## Multiple R-squared:  0.02694,    Adjusted R-squared:  0.02286 
+    ## F-statistic: 6.597 on 8 and 1906 DF,  p-value: 1.584e-08
 
 ``` r
 #make predictions on test data
@@ -153,7 +153,7 @@ summary(abs(residuals))
 ```
 
     ##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-    ##      2.8   3816.3   4993.5   6093.6   6302.2 681031.4
+    ##     1.42  1591.14  2524.38  3144.24  3466.60 79017.74
 
 ``` r
 plot(test_pred, dataTest$shares, col="dark blue")
@@ -181,19 +181,19 @@ rf_fit
 
     ## Random Forest 
     ## 
-    ## 4662 samples
+    ## 1915 samples
     ##    7 predictor
     ##    2 classes: '0', '1' 
     ## 
     ## Pre-processing: centered (7), scaled (7) 
     ## Resampling: Cross-Validated (10 fold, repeated 3 times) 
-    ## Summary of sample sizes: 4196, 4197, 4195, 4196, 4195, 4195, ... 
+    ## Summary of sample sizes: 1724, 1724, 1723, 1724, 1722, 1724, ... 
     ## Resampling results across tuning parameters:
     ## 
     ##   mtry  Accuracy   Kappa    
-    ##   2     0.6279138  0.2554862
-    ##   4     0.6083901  0.2164626
-    ##   7     0.6030982  0.2060091
+    ##   2     0.6929535  0.1034776
+    ##   4     0.6734562  0.1012892
+    ##   7     0.6741489  0.1052214
     ## 
     ## Accuracy was used to select the optimal model using the largest value.
     ## The final value used for the model was mtry = 2.
@@ -209,26 +209,26 @@ res
     ## 
     ##           Reference
     ## Prediction   0   1
-    ##          0 375 214
-    ##          1 598 812
+    ##          0   2   4
+    ##          1 272 544
     ##                                           
-    ##                Accuracy : 0.5938          
-    ##                  95% CI : (0.5719, 0.6154)
-    ##     No Information Rate : 0.5133          
-    ##     P-Value [Acc > NIR] : 2.848e-13       
+    ##                Accuracy : 0.6642          
+    ##                  95% CI : (0.6308, 0.6965)
+    ##     No Information Rate : 0.6667          
+    ##     P-Value [Acc > NIR] : 0.5749          
     ##                                           
-    ##                   Kappa : 0.1787          
+    ##                   Kappa : 0               
     ##                                           
-    ##  Mcnemar's Test P-Value : < 2.2e-16       
+    ##  Mcnemar's Test P-Value : <2e-16          
     ##                                           
-    ##             Sensitivity : 0.3854          
-    ##             Specificity : 0.7914          
-    ##          Pos Pred Value : 0.6367          
-    ##          Neg Pred Value : 0.5759          
-    ##              Prevalence : 0.4867          
-    ##          Detection Rate : 0.1876          
-    ##    Detection Prevalence : 0.2946          
-    ##       Balanced Accuracy : 0.5884          
+    ##             Sensitivity : 0.007299        
+    ##             Specificity : 0.992701        
+    ##          Pos Pred Value : 0.333333        
+    ##          Neg Pred Value : 0.666667        
+    ##              Prevalence : 0.333333        
+    ##          Detection Rate : 0.002433        
+    ##    Detection Prevalence : 0.007299        
+    ##       Balanced Accuracy : 0.500000        
     ##                                           
     ##        'Positive' Class : 0               
     ## 
@@ -238,4 +238,4 @@ res
 1-sum(diag(res$table))/sum(res$table)
 ```
 
-    ## [1] 0.4062031
+    ## [1] 0.3357664

@@ -28,5 +28,8 @@ dayvars <- c("monday", "tuesday", "wednesday", "thursday", "friday", "saturday",
 output_file <- paste0(dayvars, ".md")
 params = lapply(dayvars, FUN = function(x){list(day = x)})
 reports <- tibble(output_file, params)
-pwalk(reports, render, input = "C:\\Users\\jessi\\Documents\\ST 558\\project2\\project2\\st558proj2daily.Rmd")
+apply(reports, MARGIN = 1,
+FUN = function(x){
+render(input = "C:\\Users\\jessi\\Documents\\ST 558\\project2\\project2\\st558proj2daily.Rmd", output_file = x[[1]], params = x[[2]])
+})
 ```
